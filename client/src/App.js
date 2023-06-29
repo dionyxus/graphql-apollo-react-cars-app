@@ -5,6 +5,7 @@ import './App.css'
 import Title from './components/layout/Title'
 import AddContact from './components/forms/AddContact'
 import Contacts from './components/lists/Contacts'
+import Cars from './components/lists/Cars'
 
 const client = new ApolloClient({
   uri: 'http://localhost:8080/graphql',
@@ -17,6 +18,7 @@ const App = () => (
       <Title />
       <AddContact />
       <Contacts />
+      <Cars />
     </div>
   </ApolloProvider>
 )

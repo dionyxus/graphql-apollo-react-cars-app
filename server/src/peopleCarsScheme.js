@@ -98,9 +98,20 @@ const typeDefs = `
     lastName: String
   }
 
+  type Car {
+    id: String!
+    year: String
+    make: String
+    model: String
+    price: String
+    personId: String
+  }
+
   type Query {
     contact(id: String!): Contact
     contacts: [Contact]
+    car(id: String!): Car
+    cars: [Car]
   }
 
   type Mutation {
@@ -115,6 +126,10 @@ const resolvers = {
     contacts: () => people,
     contact: (parent, args) => {
       return find(people, { id: args.id })
+    },
+    cars: () => cars,
+    contact: (parent, args) => {
+      return find(cars, { id: args.id })
     }
   },
   Mutation: {
