@@ -1,3 +1,5 @@
+import { find, remove } from 'lodash';
+
 const people = [
   {
     id: '1',
@@ -119,6 +121,8 @@ const typeDefs = `
     updateContact(id: String!, firstName: String!, lastName: String!): Contact
     removeContact(id: String!): Contact
     addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
+    updateCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
+    removeCar(id: String!): Car
   }
 `
 
@@ -129,7 +133,7 @@ const resolvers = {
       return find(people, { id: args.id })
     },
     cars: () => cars,
-    contact: (parent, args) => {
+    car: (parent, args) => {
       return find(cars, { id: args.id })
     }
   },
@@ -181,6 +185,32 @@ const resolvers = {
       cars.push(newCar)
 
       return newCar
+    },
+    updateCar: (root, args) => {
+      const car = find(cars, { id: args.id })
+      if (!car) {
+        throw new Error(`Couldn't find car with id ${args.id}`)
+      }
+
+      car.year = args.year
+      car.make = args.make
+      car.model = args.model
+      car.price = args.price
+      car.personId = args.personId
+
+      return car
+    },
+    removeCar: (root, args) => {
+      const removedCar = find(cars, { id: args.id })
+      if (!removedCar) {
+        throw new Error(`Couldn't find car with id ${args.id}`)
+      }
+
+      remove(cars, c => {
+        return c.id === removedCar.id
+      })
+
+      return removedCar
     },
   }
 }

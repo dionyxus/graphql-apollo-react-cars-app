@@ -1,8 +1,8 @@
 import { Card } from 'antd'
-import RemoveContact from '../buttons/RemoveContact'
+import RemoveCar from '../buttons/RemoveCar'
 import { EditOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-import UpdateContact from '../forms/UpdateContact'
+import UpdateCar from '../forms/UpdateCar'
 
 const getStyles = () => ({
   card: {
@@ -10,8 +10,8 @@ const getStyles = () => ({
   }
 })
 
-const Contact = props => {
-  const { id, firstName, lastName } = props
+const Car = props => {
+  const { id, year, make, model, price, personId } = props
   const styles = getStyles()
   const [editMode, setEditMode] = useState(false)
 
@@ -22,10 +22,13 @@ const Contact = props => {
   return (
     <div>
       {editMode ? (
-        <UpdateContact
+        <UpdateCar
           id={id}
-          firstName={firstName}
-          lastName={lastName}
+          year={year}
+          make={make}
+          model={model}
+          price={price}
+          personId={personId}
           onButtonClick={handleButtonClick}
         />
       ) : (
@@ -33,14 +36,14 @@ const Contact = props => {
           style={styles.card}
           actions={[
             <EditOutlined key='edit' onClick={handleButtonClick} />,
-            <RemoveContact id={id} firstName={firstName} lastName={lastName} />
+            <RemoveCar id={id} year={year} make={make} />
           ]}
         >
-          {firstName} {lastName}
+          {year} {make} {model} {price}
         </Card>
       )}
     </div>
   )
 }
 
-export default Contact
+export default Car

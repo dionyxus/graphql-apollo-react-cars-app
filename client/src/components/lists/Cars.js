@@ -21,9 +21,9 @@ const Cars = () => {
 
   return (
     <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
-      {data.cars.map(({ id, year, model }) => (
+      {data.cars.map(({ id, year, model, make, price, personId }) => (
         <List.Item key={id}>
-          <Car id={id} firstName={year} lastName={model} />
+          <Car id={id} year={year} make={make} model={model} price={price} personId={personId}/>
         </List.Item>
       ))}
     </List>
