@@ -112,9 +112,9 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    contacts: () => contactsDataArray,
+    contacts: () => people,
     contact: (parent, args) => {
-      return find(contactsDataArray, { id: args.id })
+      return find(people, { id: args.id })
     }
   },
   Mutation: {
@@ -125,12 +125,12 @@ const resolvers = {
         lastName: args.lastName
       }
 
-      contactsDataArray.push(newContact)
+      people.push(newContact)
 
       return newContact
     },
     updateContact: (root, args) => {
-      const contact = find(contactsDataArray, { id: args.id })
+      const contact = find(people, { id: args.id })
       if (!contact) {
         throw new Error(`Couldn't find contact with id ${args.id}`)
       }
@@ -141,12 +141,12 @@ const resolvers = {
       return contact
     },
     removeContact: (root, args) => {
-      const removedContact = find(contactsDataArray, { id: args.id })
+      const removedContact = find(people, { id: args.id })
       if (!removedContact) {
         throw new Error(`Couldn't find contact with id ${args.id}`)
       }
 
-      remove(contactsDataArray, c => {
+      remove(people, c => {
         return c.id === removedContact.id
       })
 
