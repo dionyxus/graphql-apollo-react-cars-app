@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Select } from 'antd'
 import { v4 as uuidv4 } from 'uuid'
 import { useMutation } from '@apollo/client'
 import { ADD_CAR, GET_CARS } from '../../queries'
 
-const AddCar = () => {
+const { Option } = Select;
+
+const AddCar = (props) => {
+  const { people } = props;
+
   const [id] = useState(uuidv4())
   const [addCar] = useMutation(ADD_CAR)
 
@@ -28,17 +32,10 @@ const AddCar = () => {
         price,
         personId
       },
-      update: (cache, { data: { addCar } }) => {
-        const data = cache.readQuery({ query: GET_CARS })
-        cache.writeQuery({
-          query: GET_CARS,
-          data: {
-            ...data,
-            cars: [...data.cars, addCar]
-          }
-        })
-      }
+      refetchQueries: [{query: GET_CARS, variables: {personId}}]      
     })
+
+    form.resetFields();
   }
 
   return (
@@ -76,11 +73,13 @@ const AddCar = () => {
         <Input placeholder='Price' />
       </Form.Item>
 
-      <Form.Item
-        name='personId'
-        rules={[{ required: true, message: 'Please input' }]}
-      >
-        <Input placeholder='PersonId' />
+      <Form.Item name='personId' style={{ marginBottom: '8px', width: '18%' }}
+        rules={[{ required: true, message: 'Please select person ID!' }]}>
+        <Select placeholder="Select Person">
+          {people.map(person =>
+            <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
+          )}
+        </Select>
       </Form.Item>
 
       <Form.Item shouldUpdate={true}>

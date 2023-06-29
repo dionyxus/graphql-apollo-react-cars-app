@@ -1,18 +1,19 @@
 import { useMutation } from '@apollo/client'
-import { GET_CONTACTS, REMOVE_CONTACT } from '../../queries'
+import { GET_CARS, REMOVE_CAR } from '../../queries'
 
 import { DeleteOutlined } from '@ant-design/icons'
 import filter from 'lodash.filter'
 
-const RemoveContact = ({ id }) => {
-  const [removeContact] = useMutation(REMOVE_CONTACT, {
-    update(cache, { data: { removeContact } }) {
-      const { contacts } = cache.readQuery({ query: GET_CONTACTS })
+const RemoveCar = ({ id, personId }) => {
+  const [removeCar] = useMutation(REMOVE_CAR, {
+    update(cache, { data: { removeCar } }) {
+      const { personCars } = cache.readQuery({ query: GET_CARS, variables: { personId } })
       cache.writeQuery({
-        query: GET_CONTACTS,
+        query: GET_CARS,
+        variables: { personId },
         data: {
-          contacts: filter(contacts, c => {
-            return c.id !== removeContact.id
+          personCars: filter(personCars, c => {
+            return c.id !== removeCar.id
           })
         }
       })
@@ -22,7 +23,7 @@ const RemoveContact = ({ id }) => {
   const handleButtonClick = () => {
     let result = window.confirm('Are you sure you want ot delete this contact?')
     if (result) {
-      removeContact({
+      removeCar({
         variables: {
           id
         }
@@ -33,4 +34,4 @@ const RemoveContact = ({ id }) => {
   return <DeleteOutlined key='delete' onClick={handleButtonClick} style={{ color: 'red' }} />
 }
 
-export default RemoveContact
+export default RemoveCar

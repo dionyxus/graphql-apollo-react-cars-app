@@ -10,10 +10,14 @@ const getStyles = () => ({
   }
 })
 
-const Cars = () => {
+const Cars = (props) => {
+  const { id, people } = props;
+
   const styles = getStyles()
 
-  const { loading, error, data } = useQuery(GET_CARS)
+  const { loading, error, data } = useQuery(GET_CARS, {
+    variables: { personId: id }
+  })
   if (loading) return 'Loading...'
   if (error) return `Error! ${error.message}`
 
@@ -21,9 +25,9 @@ const Cars = () => {
 
   return (
     <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
-      {data.cars.map(({ id, year, model, make, price, personId }) => (
+      {data.personCars.map(({ id, year, model, make, price, personId }) => (
         <List.Item key={id}>
-          <Car id={id} year={year} make={make} model={model} price={price} personId={personId}/>
+          <Car id={id} make={make} model={model} year={year} price={price} personId={personId} people={people} />
         </List.Item>
       ))}
     </List>

@@ -1,32 +1,57 @@
 import { useMutation } from '@apollo/client'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Select } from 'antd'
 import { useEffect, useState } from 'react'
-import { UPDATE_CAR } from '../../queries'
+import { UPDATE_CAR, GET_CARS } from '../../queries'
+import { forEach } from 'lodash'
+
+const { Option } = Select
+
 
 const UpdateCar = props => {
-  const { id, year, make, model, price, personId } = props
+  const { id, year, make, model, price, personId, people } = props
   const [form] = Form.useForm()
   const [, forceUpdate] = useState()
 
-  const [updateContact] = useMutation(UPDATE_CAR)
+  const [updateCar] = useMutation(UPDATE_CAR)
 
   useEffect(() => {
     forceUpdate({})
   }, [])
 
   const onFinish = values => {
-    const { year, make, model, price, personId } = values
+    const { make, model, year, price, personId } = values
+    const currentPersonId = props.personId
+    const newPersonId = personId
+    const idArray = [currentPersonId, newPersonId]
 
-    updateContact({
-      variables: {
-        id,
-        year,
-        make, 
-        model, 
-        price,
-        personId
-      }
-    })
+    if (currentPersonId !== newPersonId) {
+      forEach(idArray, i => {
+        updateCar({
+          variables: {
+            id,
+            make,
+            model,
+            year,
+            price,
+            personId
+          },
+          refetchQueries: [{ query: GET_CARS, variables: { personId: i } }]
+        })
+      })
+
+    } else {
+      updateCar({
+        variables: {
+          id,
+          make,
+          model,
+          year,
+          price,
+          personId
+        },
+      })
+    }
+
     props.onButtonClick()
   }
 
@@ -38,8 +63,8 @@ const UpdateCar = props => {
       onFinish={onFinish}
       initialValues={{
         year,
-        make, 
-        model, 
+        make,
+        model,
         price,
         personId
       }}
@@ -70,11 +95,14 @@ const UpdateCar = props => {
       >
         <Input placeholder='Price' />
       </Form.Item>
-      <Form.Item
-        name='personId'
-        rules={[{ required: true, message: 'Please input' }]}
-      >
-        <Input placeholder='PersonId' />
+
+      <Form.Item name='personId' style={{ marginBottom: '8px', width: '18%' }}
+        rules={[{ required: true, message: 'Please select person ID!' }]}>
+        <Select placeholder="Select Person">
+          {people.map(person =>
+            <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
+          )}
+        </Select>
       </Form.Item>
 
       <Form.Item shouldUpdate={true}>

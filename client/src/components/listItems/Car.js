@@ -6,12 +6,17 @@ import UpdateCar from '../forms/UpdateCar'
 
 const getStyles = () => ({
   card: {
-    width: '500px'
+    width: '450px',
+    backgroundColor: 'yellow',
+  },
+  list: {
+    display: 'flex',
+    justifyContent: 'center',
   }
 })
 
 const Car = props => {
-  const { id, year, make, model, price, personId } = props
+  const { id, year, make, model, price, personId, people } = props
   const styles = getStyles()
   const [editMode, setEditMode] = useState(false)
 
@@ -29,6 +34,7 @@ const Car = props => {
           model={model}
           price={price}
           personId={personId}
+          people={people}
           onButtonClick={handleButtonClick}
         />
       ) : (
@@ -36,10 +42,10 @@ const Car = props => {
           style={styles.card}
           actions={[
             <EditOutlined key='edit' onClick={handleButtonClick} />,
-            <RemoveCar id={id} year={year} make={make} />
+            <RemoveCar id={id} personId={personId} />
           ]}
         >
-          {year} {make} {model} {price}
+          {year}, {make}, {model}, ${price}
         </Card>
       )}
     </div>

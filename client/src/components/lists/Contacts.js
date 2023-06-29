@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { GET_CONTACTS } from '../../queries'
 import { List } from 'antd'
 import Contact from '../listItems/Contact'
+import AddCar from '../forms/AddCar'
 
 const getStyles = () => ({
   list: {
@@ -20,13 +21,16 @@ const Contacts = () => {
   console.log('data', data)
 
   return (
-    <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
-      {data.contacts.map(({ id, firstName, lastName }) => (
-        <List.Item key={id}>
-          <Contact id={id} firstName={firstName} lastName={lastName} />
-        </List.Item>
-      ))}
-    </List>
+    <>
+    <AddCar people={data.contacts}/>
+      <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
+        {data.contacts.map(({ id, firstName, lastName }) => (
+          <List.Item key={id}>
+            <Contact id={id} firstName={firstName} lastName={lastName} people={data.contacts} />
+          </List.Item>
+        ))}
+      </List>
+    </>
   )
 }
 

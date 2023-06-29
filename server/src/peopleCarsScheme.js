@@ -114,6 +114,7 @@ const typeDefs = `
     contacts: [Contact]
     car(id: String!): Car
     cars: [Car]
+    personCars(personId: String!): [Car]
   }
 
   type Mutation {
@@ -123,6 +124,7 @@ const typeDefs = `
     addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
     updateCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
     removeCar(id: String!): Car
+    removePersonCars(personId: String!): [Car]
   }
 `
 
@@ -135,7 +137,11 @@ const resolvers = {
     cars: () => cars,
     car: (parent, args) => {
       return find(cars, { id: args.id })
-    }
+    },
+    personCars(parent, args) {
+      return cars.filter(car => car.personId === args.personId)
+    },
+    cars: () => cars
   },
   Mutation: {
     addContact: (root, args) => {
@@ -212,6 +218,19 @@ const resolvers = {
 
       return removedCar
     },
+    removePersonCars: (root, args) => {
+      const removedCars = filter(cars, { personId: args.personId })
+
+      if (!removedCars) {
+        throw new Error(`Couldn't find cars for person with ID: ${args.personId}`)
+      }
+
+      remove(cars, car => {
+        return car.personId === args.personId
+      })
+
+      return removedCars
+    }
   }
 }
 
