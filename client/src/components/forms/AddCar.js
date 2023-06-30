@@ -32,71 +32,74 @@ const AddCar = (props) => {
         price,
         personId
       },
-      refetchQueries: [{query: GET_CARS, variables: {personId}}]      
+      refetchQueries: [{ query: GET_CARS, variables: { personId } }]
     })
 
     form.resetFields();
   }
 
   return (
-    <Form
-      form={form}
-      name='add-car-form'
-      layout='inline'
-      onFinish={onFinish}
-      size='large'
-      style={{ marginBottom: '40px' }}
-    >
-      <Form.Item
-        name='year'
-        rules={[{ required: true, message: 'Please input' }]}
+    <>
+      <h1>Add Car</h1>
+      <Form
+        form={form}
+        name='add-car-form'
+        layout='inline'
+        onFinish={onFinish}
+        size='large'
+        style={{ marginBottom: '40px', justifyContent: 'center', display: 'flex' }}
       >
-        <Input placeholder='Year' />
-      </Form.Item>
-      <Form.Item
-        name='make'
-        rules={[{ required: true, message: 'Please input' }]}
-      >
-        <Input placeholder='Make' />
-      </Form.Item>
+        <Form.Item
+          name='year'
+          rules={[{ required: true, message: 'Please input' }]}
+        >
+          <Input placeholder='Year' />
+        </Form.Item>
+        <Form.Item
+          name='make'
+          rules={[{ required: true, message: 'Please input' }]}
+        >
+          <Input placeholder='Make' />
+        </Form.Item>
 
-      <Form.Item
-        name='model'
-        rules={[{ required: true, message: 'Please input' }]}
-      >
-        <Input placeholder='Model' />
-      </Form.Item>
-      <Form.Item
-        name='price'
-        rules={[{ required: true, message: 'Please input' }]}
-      >
-        <Input placeholder='Price' />
-      </Form.Item>
+        <Form.Item
+          name='model'
+          rules={[{ required: true, message: 'Please input' }]}
+        >
+          <Input placeholder='Model' />
+        </Form.Item>
+        <Form.Item
+          name='price'
+          rules={[{ required: true, message: 'Please input' }]}
+        >
+          <Input placeholder='Price' />
+        </Form.Item>
 
-      <Form.Item name='personId' style={{ marginBottom: '8px', width: '18%' }}
-        rules={[{ required: true, message: 'Please select person ID!' }]}>
-        <Select placeholder="Select Person">
-          {people.map(person =>
-            <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
+        <Form.Item name='personId' style={{ marginBottom: '8px', width: '18%' }}
+          rules={[{ required: true, message: 'Please select person ID!' }]}>
+          <Select placeholder="Select Person">
+            {people.map(person =>
+              <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
+            )}
+          </Select>
+        </Form.Item>
+
+        <Form.Item shouldUpdate={true}>
+          {() => (
+            <Button
+              type='primary'
+              htmlType='submit'
+              disabled={
+                !form.isFieldsTouched(true) ||
+                form.getFieldsError().filter(({ errors }) => errors.length).length
+              }
+            >
+              Add Car
+            </Button>
           )}
-        </Select>
-      </Form.Item>
-
-      <Form.Item shouldUpdate={true}>
-        {() => (
-          <Button
-            type='primary'
-            htmlType='submit'
-            disabled={
-              !form.isFieldsTouched(true) ||
-              form.getFieldsError().filter(({ errors }) => errors.length).length
-            }
-          >
-            Add Car
-          </Button>
-        )}
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+    </>
   )
 }
 

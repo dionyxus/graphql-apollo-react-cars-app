@@ -69,6 +69,8 @@ const UpdateCar = props => {
         personId
       }}
       size='large'
+      style={{ marginBottom: '20px', justifyContent: 'center', display: 'flex' }}
+
     >
       <Form.Item
         name='year'

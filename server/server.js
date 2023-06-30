@@ -32,7 +32,7 @@ const startApolloServer = async (resolvers, typeDefs) => {
   )
 
   // Modified server startup
-  await new Promise(resolve => httpServer.listen({ port: 8080 }, resolve))
+  await new Promise(resolve => httpServer.listen({ port: 8081 }, resolve))
 
   console.log(`Server started at http://localhost:8080/graphql`)
 }

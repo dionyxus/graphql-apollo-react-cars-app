@@ -6,8 +6,9 @@ import UpdateCar from '../forms/UpdateCar'
 
 const getStyles = () => ({
   card: {
-    width: '450px',
-    backgroundColor: 'yellow',
+    width: '600px',
+    backgroundColor: 'grey',
+    color: "white"
   },
   list: {
     display: 'flex',

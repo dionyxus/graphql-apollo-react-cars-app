@@ -4,10 +4,11 @@ import { EditOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import UpdateContact from '../forms/UpdateContact'
 import Cars from '../lists/Cars'
+import { Link } from 'react-router-dom'
 
 const getStyles = () => ({
   card: {
-    width: '500px'
+    width: '100%',
   }
 })
 
@@ -39,6 +40,9 @@ const Contact = props => {
         >
           {firstName} {lastName}
           <Cars id={id} people={people} />
+
+          <Link to={`/people/${id}`}>LEARN MORE</Link>
+
         </Card>
       )}
     </div>

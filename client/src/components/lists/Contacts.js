@@ -23,6 +23,7 @@ const Contacts = () => {
   return (
     <>
     <AddCar people={data.contacts}/>
+    <h1>Records</h1>
       <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
         {data.contacts.map(({ id, firstName, lastName }) => (
           <List.Item key={id}>
